@@ -666,35 +666,56 @@ function initCalculator(data) {
         return newRow;
     }
     
-    // === START: 요청사항 반영 수정 ===
-    // 새로운 하이라이트 규칙을 적용하는 함수
+    // === START: 요청사항 반영 수정 (새로운 하이라이트 로직) ===
     function updateRowHighlight(row) {
         if (!row) return;
 
+        const highlightClasses = ['highlight-extraction', 'highlight-perio', 'highlight-nerve', 'highlight-etc', 'highlight-monitoring'];
         const notesInput = row.querySelector('.notes');
-        const select = row.querySelector('select');
-        
-        // 하이라이트를 적용할 테이블 셀(td)을 가져옵니다.
         const notesCell = notesInput ? notesInput.closest('td') : null;
-        const procedureCell = select ? select.closest('td') : null;
-        const idCell = row.querySelector('.tooth-id-cell');
-        
-        // 1. 모든 관련 셀의 배경색을 초기화합니다.
-        if (notesCell) notesCell.style.backgroundColor = '';
-        if (procedureCell) procedureCell.style.backgroundColor = '';
-        if (idCell) idCell.style.backgroundColor = '';
+        const select = row.querySelector('select.procedure-select');
 
-        // 2. 새로운 규칙에 따라 배경색을 적용합니다.
-        // 규칙 1: '특이사항'에 내용이 있으면 해당 셀을 연한 노란색으로 변경
-        if (notesInput && notesInput.value.trim() !== '') {
-            if (notesCell) notesCell.style.backgroundColor = '#fffde7';
+        // 1. 모든 이전 하이라이트 초기화
+        row.classList.remove(...highlightClasses);
+        if (notesCell) {
+            notesCell.style.backgroundColor = '';
         }
-        
-        // 규칙 2: 시술을 선택하면('모니터링' 포함) '번호' 셀과 '시술 선택' 셀을 연한 빨간색으로 변경
-        if (select && select.value !== '0' && select.value !== 'disabled') {
-            const redBackgroundColor = '#ffcdd2';
-            if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
-            if (idCell) idCell.style.backgroundColor = redBackgroundColor;
+
+        // 2. '특이사항' 내용에 따른 하이라이트 적용
+        if (notesInput && notesInput.value.trim() !== '') {
+            if (notesCell) {
+                notesCell.style.backgroundColor = '#fffde7'; // 연한 노란색
+            }
+        }
+
+        // 3. 선택된 시술 카테고리에 따른 하이라이트 적용
+        if (select) {
+            const selectedOption = select.options[select.selectedIndex];
+            if (selectedOption && select.value !== '0' && select.value !== 'disabled') {
+                const category = selectedOption.dataset.category;
+                let classToAdd = '';
+
+                switch (category) {
+                    case '발치/제거':
+                        classToAdd = 'highlight-extraction';
+                        break;
+                    case '치주 치료':
+                        classToAdd = 'highlight-perio';
+                        break;
+                    case '신경/보존 치료':
+                        classToAdd = 'highlight-nerve';
+                        break;
+                    case '기타':
+                        classToAdd = 'highlight-etc';
+                        break;
+                    case '모니터링':
+                        classToAdd = 'highlight-monitoring';
+                        break;
+                }
+                if (classToAdd) {
+                    row.classList.add(classToAdd);
+                }
+            }
         }
     }
     // === END: 요청사항 반영 수정 ===
@@ -1527,4 +1548,4 @@ function addExportListeners(pageSelector, type) {
         });
     });
 }
-// === END: 요청사항 반영 수정 (버튼 리스너) ===
+// === END: 요청사항 반영 수정 ===
