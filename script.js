@@ -525,27 +525,24 @@ function initCalculator(data) {
         'table-upper-left':  [ { id: '201', type: '앞이빨', group: 3 }, { id: '202', type: '' }, { id: '203', type: '' }, { id: '204', type: '송곳니', group: 1 }, { id: '205', type: '작은<br>어금니', group: 4 }, { id: '206', type: '' }, { id: '207', type: '' }, { id: '208', type: '열육치' }, { id: '209', type: '큰<br>어금니', group: 2 }, { id: '210', type: '' } ],
         'table-lower-left':  [ { id: '301', type: '앞이빨', group: 3 }, { id: '302', type: '' }, { id: '303', type: '' }, { id: '304', type: '송곳니', group: 1 }, { id: '305', type: '작은<br>어금니', group: 4 }, { id: '306', type: '' }, { id: '307', type: '' }, { id: '308', type: '' }, { id: '309', type: '대구치', group: 3 }, { id: '310', type: '' }, { id: '311', type: '' } ]
     };
-    // [수정된 부분] 치아 뿌리 개수 재정의
-    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':1,'106':2,'107':2,'108':3,'109':3,'110':2, '201':1,'202':1,'203':1,'204':1,'205':1,'206':2,'207':2,'208':3,'209':3,'210':2, '301':1,'302':1,'303':1,'304':1,'305':1,'306':2,'307':2,'308':2,'309':2,'310':2,'311':1, '401':1,'402':1,'403':1,'404':1,'405':1,'406':2,'407':2,'408':2,'409':2,'410':2,'411':1 };
+    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':2,'106':2,'107':2,'108':3,'109':3,'110':2, '201':1,'202':1,'203':1,'204':1,'205':2,'206':2,'207':2,'208':3,'209':3,'210':2, '301':1,'302':1,'303':1,'304':1,'305':2,'306':2,'307':2,'308':2,'309':2,'310':2,'311':1, '401':1,'402':1,'403':1,'404':1,'405':2,'406':2,'407':2,'408':2,'409':2,'410':2,'411':1 };
 
-    // [수정된 부분] 시술 목록 및 규칙 재정의
     const procedureList = {
         '발치': { cat: '발치/제거', items: [
-            // 일반 규칙 (특정 치아 제외)
-            {l:'일반-뿌리1', s:22000, lrg:33000, r:[1]},
+            {l:'일반-뿌리1', s:22000, lrg:33000, r:[1], not:['311', '411']},
             {l:'일반-뿌리2', s:66000, lrg:77000, r:[2], not:['309', '409']},
             {l:'일반-뿌리3개', s:88000, lrg:110000, r:[3], not:['108', '208']},
-            {l:'수술-뿌리1', s:44000, lrg:66000, r:[1]},
+            {l:'수술-뿌리1', s:44000, lrg:66000, r:[1], not:['311', '411']},
             {l:'수술-뿌리2', s:120000, lrg:140000, r:[2], not:['309', '409']},
             {l:'수술-뿌리3개', s:220000, lrg:320000, r:[3], not:['108', '208']},
-            // 특정 치아 규칙
             {l:'일반-대구치', s:88000, lrg:110000, t:['309', '409']},
             {l:'수술-대구치', s:220000, lrg:320000, t:['309', '409']},
             {l:'일반-열육치(PM4)', s:88000, lrg:110000, t:['108','208']},
             {l:'수술-열육치(PM4)', s:220000, lrg:320000, t:['108','208']},
+            {l:'일반-뿌리1개', s:22000, lrg:33000, t:['311', '411']},
+            {l:'수술-뿌리1개', s:44000, lrg:66000, t:['311', '411']},
             {l:'수술-송곳니(상)', s:220000, lrg:320000, t:['104','204']},
             {l:'수술-송곳니(하)', s:270000, lrg:370000, t:['304','404']},
-            // 유치 및 기타 규칙
             {l:'유치-일반', s:22000, lrg:33000, tag:'deciduous'},
             {l:'유치-송곳니(x-rayX)', s:22000, lrg:33000, t:['104','204','304','404'], tag:'deciduous'},
             {l:'유치-송곳니(x-rayO)', s:33000, lrg:44000, t:['104','204','304','404'], tag:'deciduous'},
@@ -555,9 +552,9 @@ function initCalculator(data) {
             {l:'특수-치아흡수-뿌리3', s:140000, lrg:160000, r:[3]}
         ]},
         '치주 수술': { cat: '치주 치료', items: [
-            {l:'치근활택술', v:45000},
-            {l:'개방 치근활택술', v:220000},
-            {l:'미노클린', v:22000},
+            {l:'치근활택술', v:45000}, 
+            {l:'개방 치근활택술', v:220000}, 
+            {l:'미노클린', v:22000}, 
             {l:'엠도게인', v:99000}
         ]},
         '신경치료': { cat: '신경/보존 치료', items: [
@@ -621,29 +618,16 @@ function initCalculator(data) {
             });
         }
 
-        // Custom VPT logic
         addOption(select, `▼ VPT (생활치수절단술)`, 'disabled');
         const vptCategory = '신경/보존 치료';
-        if (isSmallDog) { // < 10kg
-            if (roots === 1) {
-                addOption(select, 'VPT', 450000, vptCategory);
-            } else if (roots === 2) {
-                addOption(select, 'VPT-1홀', 450000, vptCategory);
-                addOption(select, 'VPT-2홀', 660000, vptCategory);
-            } else if (roots === 3) {
-                addOption(select, 'VPT-1홀', 450000, vptCategory);
-                addOption(select, 'VPT-3홀', 660000, vptCategory);
-            }
-        } else { // >= 10kg
-            if (roots === 1) {
-                addOption(select, 'VPT', 550000, vptCategory);
-            } else if (roots === 2) {
-                addOption(select, 'VPT-1홀', 550000, vptCategory);
-                addOption(select, 'VPT-2홀', 770000, vptCategory);
-            } else if (roots === 3) {
-                addOption(select, 'VPT-1홀', 550000, vptCategory);
-                addOption(select, 'VPT-3홀', 880000, vptCategory);
-            }
+        if (isSmallDog) { 
+            if (roots === 1) { addOption(select, 'VPT', 450000, vptCategory); } 
+            else if (roots === 2) { addOption(select, 'VPT-1홀', 450000, vptCategory); addOption(select, 'VPT-2홀', 660000, vptCategory); } 
+            else if (roots === 3) { addOption(select, 'VPT-1홀', 450000, vptCategory); addOption(select, 'VPT-3홀', 660000, vptCategory); }
+        } else { 
+            if (roots === 1) { addOption(select, 'VPT', 550000, vptCategory); } 
+            else if (roots === 2) { addOption(select, 'VPT-1홀', 550000, vptCategory); addOption(select, 'VPT-2홀', 770000, vptCategory); } 
+            else if (roots === 3) { addOption(select, 'VPT-1홀', 550000, vptCategory); addOption(select, 'VPT-3홀', 880000, vptCategory); }
         }
     }
     
@@ -675,27 +659,51 @@ function initCalculator(data) {
     
     function updateRowHighlight(row) {
         if (!row) return;
-
         const notesInput = row.querySelector('.notes');
         const select = row.querySelector('select');
-        
         const notesCell = notesInput ? notesInput.closest('td') : null;
         const procedureCell = select ? select.closest('td') : null;
         const idCell = row.querySelector('.tooth-id-cell');
-        
         if (notesCell) notesCell.style.backgroundColor = '';
         if (procedureCell) procedureCell.style.backgroundColor = '';
         if (idCell) idCell.style.backgroundColor = '';
-
         if (notesInput && notesInput.value.trim() !== '') {
             if (notesCell) notesCell.style.backgroundColor = '#fffde7';
         }
-        
         if (select && select.value !== '0' && select.value !== 'disabled') {
             const redBackgroundColor = '#ffcdd2';
             if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
             if (idCell) idCell.style.backgroundColor = redBackgroundColor;
         }
+    }
+    
+    // [수정된 부분] "모니터링" 텍스트 스타일링 함수
+    function applyMonitoringStyle(row) {
+        if (!row) return;
+
+        const styleElement = (element, cell) => {
+            let isMonitoring = false;
+            if (element.tagName === 'INPUT' && element.value.includes('모니터링')) {
+                isMonitoring = true;
+            } else if (element.tagName === 'SELECT' && element.value !== '0' && element.options[element.selectedIndex].text.includes('모니터링')) {
+                isMonitoring = true;
+            }
+
+            if (isMonitoring) {
+                element.style.color = 'red';
+                element.style.fontWeight = 'bold';
+                if (cell) cell.style.color = 'red'; 
+            } else {
+                element.style.color = '';
+                element.style.fontWeight = '';
+                if (cell) cell.style.color = '';
+            }
+        };
+
+        const notesInput = row.querySelector('.notes');
+        const select = row.querySelector('.procedure-select');
+        if (notesInput) styleElement(notesInput, notesInput.closest('td'));
+        if (select) styleElement(select, select.closest('td'));
     }
 
     function handleSelectionChange(target) {
@@ -739,7 +747,8 @@ function initCalculator(data) {
             }
         }
 
-        updateRowHighlight(row); 
+        updateRowHighlight(row);
+        applyMonitoringStyle(row); // [수정된 부분] 스타일 적용
         updateTotalCost();
         isChartDirty = true;
     }
@@ -875,7 +884,7 @@ function initCalculator(data) {
                 else if (weight < 15) pricePer30min = 66000;
                 else if (weight < 20) pricePer30min = 77000;
                 else pricePer30min = 88000;
-                for(let i = 1; i <= 8; i++){ // 30분 ~ 4시간(240분)
+                for(let i = 1; i <= 8; i++){ 
                     add(`마취시간 연장 (${i*30}분)`, pricePer30min * i);
                 }
             }
@@ -886,7 +895,7 @@ function initCalculator(data) {
                 } else if (weight < 10) {
                     add('국소마취 (1 site)', 12000); add('국소마취 (2 site)', 17000);
                     add('국소마취 (3 site)', 20000); add('국소마취 (4 site)', 22000);
-                } else if (weight < 20) { // 10-15, 15-20 가격 동일
+                } else if (weight < 20) { 
                     add('국소마취 (1 site)', 12000); add('국소마취 (2 site)', 17000);
                     add('국소마취 (3 site)', 20000); add('국소마취 (4 site)', 22000);
                 } else {
@@ -1015,7 +1024,6 @@ function initCalculator(data) {
         const summaryTableBody = page.querySelector('.cost-summary-table tbody');
         const additionalCostRow = summaryTableBody.querySelector('tr:has(.additional-treatment-cost-display)');
 
-        // 건강검진 비용 행 처리
         let healthCheckRow = summaryTableBody.querySelector('#health-check-cost-row');
         if (healthCheckCost > 0) {
             if (!healthCheckRow) {
@@ -1030,7 +1038,6 @@ function initCalculator(data) {
             healthCheckRow.style.display = 'none';
         }
 
-        // 스케일링 비용 행 처리
         let scalingRow = summaryTableBody.querySelector('#scaling-cost-row');
         if (scalingCost > 0) {
             if (!scalingRow) {
@@ -1170,7 +1177,8 @@ function initCalculator(data) {
                     });
                 }
                 
-                page.querySelectorAll('.main-container .procedure-select').forEach(select => handleSelectionChange(select));
+                page.querySelectorAll('.main-container .procedure-select, .main-container .notes').forEach(el => handleSelectionChange(el));
+                page.querySelectorAll('.main-container tr').forEach(applyMonitoringStyle); // [수정된 부분] 로드 시 스타일 적용
 
                 if (chartData.additionalTreatments) {
                     for (const [id, value] of Object.entries(chartData.additionalTreatments)) {
@@ -1209,6 +1217,7 @@ function initCalculator(data) {
         isChartDirty = true;
         if (e.target.matches('.notes')) {
             updateRowHighlight(e.target.closest('tr'));
+            applyMonitoringStyle(e.target.closest('tr')); // [수정된 부분] 스타일 적용
         }
         if (e.target.matches('#patient-weight-calc')) { 
             updateAllProcedureSelects();
@@ -1254,7 +1263,8 @@ function initCalculator(data) {
         teeth.forEach(tooth => {
             const mainRow = createMainRow(tooth);
             tableBody.appendChild(mainRow);
-            updateRowHighlight(mainRow); // 초기 하이라이트 상태 설정
+            updateRowHighlight(mainRow);
+            applyMonitoringStyle(mainRow);
         });
     }
     
@@ -1281,6 +1291,7 @@ function initCalculator(data) {
     });
 }
 
+// [수정된 부분] 출력 페이지 생성 로직 수정
 function copyCalculatorDataTo(targetId) {
     const calculatorCaptureArea = document.querySelector('#Calculator-Page .capture-area');
     const targetPanel = document.getElementById(targetId);
@@ -1297,17 +1308,42 @@ function copyCalculatorDataTo(targetId) {
         if (clonedEl) {
             if (sourceEl.tagName === 'SELECT') {
                 clonedEl.selectedIndex = sourceEl.selectedIndex;
-                const sourceOption = sourceEl.options[sourceEl.selectedIndex];
-                const clonedOption = clonedEl.options[clonedEl.selectedIndex];
-                if (sourceOption && clonedOption && sourceOption.style.color) {
-                    clonedOption.style.color = sourceOption.style.color;
-                    clonedOption.style.fontWeight = sourceOption.style.fontWeight;
-                }
             }
             else if (sourceEl.type === 'checkbox' || sourceEl.type === 'radio') clonedEl.checked = sourceEl.checked;
             else clonedEl.value = sourceEl.value;
         }
     });
+
+    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
+        const notesInput = row.querySelector('.notes');
+        if (notesInput) {
+            const replacementDiv = document.createElement('div');
+            replacementDiv.textContent = notesInput.value;
+            if (notesInput.value.includes('모니터링')) {
+                replacementDiv.style.color = 'red';
+                replacementDiv.style.fontWeight = 'bold';
+            }
+            notesInput.parentElement.style.padding = '8px 4px';
+            notesInput.replaceWith(replacementDiv);
+        }
+
+        const procSelect = row.querySelector('.procedure-select');
+        if (procSelect) {
+            const replacementDiv = document.createElement('div');
+            if (procSelect.value !== '0' && procSelect.value !== 'disabled') {
+                 const selectedText = procSelect.options[procSelect.selectedIndex].text;
+                 replacementDiv.textContent = selectedText;
+                 if (selectedText.includes('모니터링')) {
+                     replacementDiv.style.color = 'red';
+                     replacementDiv.style.fontWeight = 'bold';
+                 }
+            }
+            procSelect.parentElement.style.padding = '8px 4px';
+            procSelect.replaceWith(replacementDiv);
+        }
+    });
+
+    clonedArea.querySelectorAll('.add-btn, .remove-btn').forEach(btn => btn.parentElement.remove());
 
     clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
         const select = row.querySelector('select');
@@ -1327,22 +1363,13 @@ function copyCalculatorDataTo(targetId) {
         }
         if(allHidden) row.style.display = 'none';
     });
-    
-    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
-        const select = row.querySelector('.procedure-select');
-        const notes = row.querySelector('.notes');
-        if (select && select.value === '0' && notes && notes.value.trim() === '') {
-            row.style.opacity = '0.6'; 
-        }
-    });
-
 
     const patientName = document.querySelector('#patient-name-calc').value || '댕댕이';
     const visitDateRaw = document.querySelector('#visit-date-calc').value;
     const visitDate = new Date(visitDateRaw);
     const formattedDate = visitDateRaw && !isNaN(visitDate.getTime()) ? `${visitDate.getFullYear()}년 ${visitDate.getMonth() + 1}월 ${visitDate.getDate()}일` : "오늘";
     
-    targetCaptureArea.innerHTML = ''; 
+    targetCaptureArea.innerHTML = '';
     
     const toothFormulaImage = document.createElement('img');
     toothFormulaImage.src = "https://raw.githubusercontent.com/ivomec/image/main/%EC%B9%98%EC%8B%9D1.jpg?raw=true";
@@ -1390,25 +1417,24 @@ function generateGuardianComments(clonedArea) {
         'RECHECK': '양치질 시작 시점과 다음 검진(리첵) 일정은 병원에서 별도로 안내해 드릴 예정입니다. 아이의 빠른 회복과 구강 건강 유지를 위해 꼭 지켜주시길 바랍니다.'
     };
     
-    clonedArea.querySelectorAll('.procedure-select').forEach(select => {
-        if(!select || select.value === '0' || select.value === 'disabled') return;
-        const selectedOption = select.options[select.selectedIndex];
-        const category = selectedOption?.dataset.category;
-        
-        if (category === '발치/제거') careAdviceCategories.add('EXTRACTION');
-        if (category === '신경/보존 치료') careAdviceCategories.add('RESIN');
-        if (category === '치주 치료') careAdviceCategories.add('PERIODONTAL');
+    clonedArea.querySelectorAll('div').forEach(div => {
+        const text = div.textContent;
+        if (text.includes('발치') || text.includes('제거')) careAdviceCategories.add('EXTRACTION');
+        if (text.includes('레진')) careAdviceCategories.add('RESIN');
+        if (text.includes('치주') || text.includes('활택술') || text.includes('미노클린') || text.includes('엠도게인')) careAdviceCategories.add('PERIODONTAL');
     });
     
     if (clonedArea.querySelector('[data-item-id="medication"]')?.value !== '선택안함|0' || clonedArea.querySelector('[data-item-id="liquid_analgesic_nsaid"]')?.value !== '선택안함|0') {
         careAdviceCategories.add('MEDICATION');
     }
+
     let careAdviceHTML = `<li>${careAdviceMap['GENERAL']}</li>`;
     if (careAdviceCategories.has('EXTRACTION')) careAdviceHTML += `<li>${careAdviceMap['EXTRACTION']}</li>`;
     if (careAdviceCategories.has('PERIODONTAL')) careAdviceHTML += `<li>${careAdviceMap['PERIODONTAL']}</li>`;
     if (careAdviceCategories.has('RESIN')) careAdviceHTML += `<li>${careAdviceMap['RESIN']}</li>`;
     if (careAdviceCategories.has('MEDICATION')) careAdviceHTML += `<li>${careAdviceMap['MEDICATION']}</li>`;
     careAdviceHTML += `<li>${careAdviceMap['RECHECK']}</li>`;
+
     return `<div class="guardian-comment-section"><h2>⭐ 우리 아이, 이렇게 관리해주세요! ⭐</h2><div class="comment-box"><h3>- 🩺 앞으로의 관리 안내</h3><ul>${careAdviceHTML}</ul></div><p class="thank-you-message">소중한 아이의 치과 수술을 저희 금호동물병원에 믿고 맡겨주셔서 다시 한번 진심으로 감사드립니다.</p></div>`;
 }
 
@@ -1418,57 +1444,12 @@ function addExportListeners(pageSelector, type) {
 
     const exportHandler = (exportFunc) => {
         const captureArea = page.querySelector('.capture-area');
-        const patientInfoInputs = document.querySelector('#Calculator-Page .patient-info-inputs');
-        const originalDisplay = patientInfoInputs ? patientInfoInputs.style.display : '';
-        if (patientInfoInputs) patientInfoInputs.style.display = 'none';
-
-        const unselectedAddonRows = captureArea.querySelectorAll('.additional-treatments-container tr.additional-row');
-        const hiddenAddonRows = [];
-        unselectedAddonRows.forEach(row => {
-            const select = row.querySelector('select');
-            if (select && select.value === '선택안함|0') {
-                row.style.display = 'none';
-                hiddenAddonRows.push(row);
-            }
-        });
-
-        const categoryHeaders = captureArea.querySelectorAll('.additional-treatments-container tr.category-header');
-        const hiddenCategoryHeaders = [];
-        categoryHeaders.forEach(row => {
-            let next = row.nextElementSibling;
-            let allHidden = true;
-            while(next && !next.classList.contains('category-header')){
-                if(next.style.display !== 'none') {
-                    allHidden = false;
-                    break;
-                }
-                next = next.nextElementSibling;
-            }
-            if(allHidden) {
-                row.style.display = 'none';
-                hiddenCategoryHeaders.push(row);
-            }
-        });
         
-        const unselectedDentalRows = captureArea.querySelectorAll('.main-container tr');
-        const hiddenDentalRows = [];
-        unselectedDentalRows.forEach(row => {
-             const select = row.querySelector('.procedure-select');
-             const notes = row.querySelector('.notes');
-             if(select && select.value === '0' && notes && notes.value.trim() === '') {
-             }
-        });
-
         html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight, useCORS: true }).then(canvas => {
             const patientName = document.querySelector('#patient-name-calc').value || '환자';
             const date = document.querySelector('#visit-date-calc').value || new Date().toISOString().split('T')[0];
             const fileName = `${patientName}_${date}_${type}`;
             exportFunc(canvas, fileName);
-        }).finally(() => {
-            if (patientInfoInputs) patientInfoInputs.style.display = originalDisplay;
-            hiddenAddonRows.forEach(row => row.style.display = '');
-            hiddenCategoryHeaders.forEach(row => row.style.display = '');
-            hiddenDentalRows.forEach(row => row.style.display = ''); 
         });
     };
 
