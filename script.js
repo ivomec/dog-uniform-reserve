@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "content": [
                 "전신 마취는 마치 <strong>'비행기 여행 ✈️'</strong>과 같아요. 여행 전에 <strong>날씨를 꼭! 체크 🌤️</strong>하는 것처럼, 마취 전 건강검진은 우리 아이의 몸 상태를 미리 확인해서 가장 안전한 여행(마취) 계획을 세우는 과정이랍니다.",
                 "겉으로는 보이지 않는 장기의 이상이나 숨겨진 질병을 미리 발견해서, 마취 중 발생할 수 있는 위험을 최소화하고 <strong>우리 댕댕이에게 가장 안전한 방법을 찾기 위한 💖사랑의 과정💖</strong>이에요.",
-                "<br><strong>❤️ 심장병이 의심될 경우 (심잡음, 심장 크기 확장 등)</strong><br>안전한 마취를 위해 심장 기능 정밀 평가를 위한 <strong>NT-ProBNP 검사(비용: 55,000원)</strong>가 추가적으로 필요할 수 있습니다. 아이의 안전을 위한 것이니 너른 양해 부탁드립니다.",
+                "<br><strong>❤️ 심장병이 의심될 경우 (심잡음, 심장 크기 확장 등)</strong><br>안전한 마취를 위해 심장 기능 정밀 평가을 위한 <strong>NT-ProBNP 검사(비용: 55,000원)</strong>가 추가적으로 필요할 수 있습니다. 아이의 안전을 위한 것이니 너른 양해 부탁드립니다.",
                 "<strong>🦋 7세 이상 노령견의 경우</strong><br>마취 중 발생할 수 있는 갑상선 기능 저하로 인한 서맥(느린맥박) 등의 위험을 방지하기 위해 <strong>갑상선 호르몬(T4) 검사(비용: 50,000원)</strong>가 의무적으로 추가됩니다."
             ]
         }
@@ -657,36 +657,36 @@ function initCalculator(data) {
         return newRow;
     }
     
-    // [수정된 부분] "모니터링" 선택 시 배경색 변경 로직 추가
+    // [수정된 부분] "모니터링" 및 카테고리별 하이라이트 적용 로직 개선
     function updateRowHighlight(row) {
         if (!row) return;
 
-        const notesInput = row.querySelector('.notes');
-        const select = row.querySelector('select');
-        
-        const notesCell = notesInput ? notesInput.closest('td') : null;
-        const procedureCell = select ? select.closest('td') : null;
-        const idCell = row.querySelector('.tooth-id-cell');
-        
-        if (notesCell) notesCell.style.backgroundColor = '';
-        if (procedureCell) procedureCell.style.backgroundColor = '';
-        if (idCell) idCell.style.backgroundColor = '';
+        // 1. Reset class-based highlights from the entire row
+        row.classList.remove(
+            'highlight-extraction',
+            'highlight-perio',
+            'highlight-nerve',
+            'highlight-etc',
+            'highlight-monitoring'
+        );
 
-        if (notesInput && notesInput.value.trim() !== '') {
-            if (notesCell) notesCell.style.backgroundColor = '#fffde7';
-        }
-        
+        // 2. Apply procedure-based highlight class to the row
+        const select = row.querySelector('select.procedure-select');
         if (select && select.value !== '0' && select.value !== 'disabled') {
-            const selectedText = select.options[select.selectedIndex].text;
-            
-            if (selectedText.includes('모니터링')) {
-                const pinkBackgroundColor = '#f8bbd0'; 
-                if (procedureCell) procedureCell.style.backgroundColor = pinkBackgroundColor;
-                if (idCell) idCell.style.backgroundColor = pinkBackgroundColor;
-            } else {
-                const redBackgroundColor = '#ffcdd2';
-                if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
-                if (idCell) idCell.style.backgroundColor = redBackgroundColor;
+            const selectedOption = select.options[select.selectedIndex];
+            const category = selectedOption.dataset.category;
+
+            let highlightClass = '';
+            switch (category) {
+                case '발치/제거':       highlightClass = 'highlight-extraction'; break;
+                case '치주 치료':        highlightClass = 'highlight-perio';      break;
+                case '신경/보존 치료':    highlightClass = 'highlight-nerve';      break;
+                case '기타':             highlightClass = 'highlight-etc';        break;
+                case '모니터링':         highlightClass = 'highlight-monitoring';  break;
+            }
+
+            if (highlightClass) {
+                row.classList.add(highlightClass);
             }
         }
     }
@@ -1121,23 +1121,37 @@ function initCalculator(data) {
         }
     }
     
+    // [수정된 부분] 저장 로직 수정
     function saveData() {
         const chartData = { appVersion: CURRENT_VERSION, patientName: page.querySelector('#patient-name-calc').value, visitDate: page.querySelector('#visit-date-calc').value, patientWeight: page.querySelector('#patient-weight-calc').value, dentalProcedures: {}, additionalTreatments: {} };
         const procedureGroups = {};
         page.querySelectorAll('.main-container tr[data-permanent-id]').forEach(row => {
             const id = row.dataset.permanentId;
-            if (!procedureGroups[id]) procedureGroups[id] = [];
-            procedureGroups[id].push({ procedure: row.querySelector('.procedure-select').value, notes: row.querySelector('.notes').value });
+            const procedureValue = row.querySelector('.procedure-select').value;
+            const notesValue = row.querySelector('.notes').value;
+
+            // 시술이 선택되었거나 특이사항이 입력된 경우에만 데이터로 간주
+            const isProcedureSelected = procedureValue && procedureValue !== '0' && procedureValue !== 'disabled';
+            const hasNotes = notesValue.trim() !== '';
+
+            if (isProcedureSelected || hasNotes) {
+                if (!procedureGroups[id]) {
+                    procedureGroups[id] = [];
+                }
+                procedureGroups[id].push({ procedure: procedureValue, notes: notesValue });
+            }
         });
-        for (const [id, procedures] of Object.entries(procedureGroups)) {
-            const validProcedures = procedures.filter(p => (p.procedure && p.procedure !== '0' && p.procedure !== 'disabled') || p.notes.trim() !== '');
-            if (validProcedures.length > 0) chartData.dentalProcedures[id] = validProcedures;
-        }
+        
+        chartData.dentalProcedures = procedureGroups;
+
         page.querySelectorAll('.additional-treatments-container select').forEach(control => {
             const id = control.dataset.itemId;
             const value = control.value;
-            if (value && value !== '선택안함|0') chartData.additionalTreatments[id] = value;
+            if (value && value !== '선택안함|0') {
+                chartData.additionalTreatments[id] = value;
+            }
         });
+
         const blob = new Blob([JSON.stringify(chartData, null, 2)], { type: 'application/json' });
         const link = document.createElement('a');
         link.download = `${chartData.patientName || '환자'}_${chartData.visitDate || '오늘'}_강아지_치과차트.json`;
@@ -1227,7 +1241,7 @@ function initCalculator(data) {
     page.addEventListener('input', (e) => {
         isChartDirty = true;
         if (e.target.matches('.notes')) {
-            updateRowHighlight(e.target.closest('tr'));
+            // updateRowHighlight(e.target.closest('tr')); // Notes input does not change category highlight
             applyMonitoringStyle(e.target.closest('tr'));
         }
         if (e.target.matches('#patient-weight-calc')) { 
@@ -1506,4 +1520,4 @@ function addExportListeners(pageSelector, type) {
             });
         });
     });
-}
+}```
