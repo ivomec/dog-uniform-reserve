@@ -657,31 +657,44 @@ function initCalculator(data) {
         return newRow;
     }
     
+    // [수정된 부분] "모니터링" 선택 시 배경색 변경 로직 추가
     function updateRowHighlight(row) {
         if (!row) return;
+
         const notesInput = row.querySelector('.notes');
         const select = row.querySelector('select');
+        
         const notesCell = notesInput ? notesInput.closest('td') : null;
         const procedureCell = select ? select.closest('td') : null;
         const idCell = row.querySelector('.tooth-id-cell');
+        
         if (notesCell) notesCell.style.backgroundColor = '';
         if (procedureCell) procedureCell.style.backgroundColor = '';
         if (idCell) idCell.style.backgroundColor = '';
+
         if (notesInput && notesInput.value.trim() !== '') {
             if (notesCell) notesCell.style.backgroundColor = '#fffde7';
         }
+        
         if (select && select.value !== '0' && select.value !== 'disabled') {
-            const redBackgroundColor = '#ffcdd2';
-            if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
-            if (idCell) idCell.style.backgroundColor = redBackgroundColor;
+            const selectedText = select.options[select.selectedIndex].text;
+            
+            if (selectedText.includes('모니터링')) {
+                const pinkBackgroundColor = '#f8bbd0'; 
+                if (procedureCell) procedureCell.style.backgroundColor = pinkBackgroundColor;
+                if (idCell) idCell.style.backgroundColor = pinkBackgroundColor;
+            } else {
+                const redBackgroundColor = '#ffcdd2';
+                if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
+                if (idCell) idCell.style.backgroundColor = redBackgroundColor;
+            }
         }
     }
     
-    // [수정된 부분] "모니터링" 텍스트 스타일링 함수
     function applyMonitoringStyle(row) {
         if (!row) return;
 
-        const styleElement = (element, cell) => {
+        const styleElement = (element) => {
             let isMonitoring = false;
             if (element.tagName === 'INPUT' && element.value.includes('모니터링')) {
                 isMonitoring = true;
@@ -692,18 +705,16 @@ function initCalculator(data) {
             if (isMonitoring) {
                 element.style.color = 'red';
                 element.style.fontWeight = 'bold';
-                if (cell) cell.style.color = 'red'; 
             } else {
                 element.style.color = '';
                 element.style.fontWeight = '';
-                if (cell) cell.style.color = '';
             }
         };
 
         const notesInput = row.querySelector('.notes');
         const select = row.querySelector('.procedure-select');
-        if (notesInput) styleElement(notesInput, notesInput.closest('td'));
-        if (select) styleElement(select, select.closest('td'));
+        if (notesInput) styleElement(notesInput);
+        if (select) styleElement(select);
     }
 
     function handleSelectionChange(target) {
@@ -748,7 +759,7 @@ function initCalculator(data) {
         }
 
         updateRowHighlight(row);
-        applyMonitoringStyle(row); // [수정된 부분] 스타일 적용
+        applyMonitoringStyle(row);
         updateTotalCost();
         isChartDirty = true;
     }
@@ -1178,7 +1189,7 @@ function initCalculator(data) {
                 }
                 
                 page.querySelectorAll('.main-container .procedure-select, .main-container .notes').forEach(el => handleSelectionChange(el));
-                page.querySelectorAll('.main-container tr').forEach(applyMonitoringStyle); // [수정된 부분] 로드 시 스타일 적용
+                page.querySelectorAll('.main-container tr').forEach(applyMonitoringStyle);
 
                 if (chartData.additionalTreatments) {
                     for (const [id, value] of Object.entries(chartData.additionalTreatments)) {
@@ -1217,7 +1228,7 @@ function initCalculator(data) {
         isChartDirty = true;
         if (e.target.matches('.notes')) {
             updateRowHighlight(e.target.closest('tr'));
-            applyMonitoringStyle(e.target.closest('tr')); // [수정된 부분] 스타일 적용
+            applyMonitoringStyle(e.target.closest('tr'));
         }
         if (e.target.matches('#patient-weight-calc')) { 
             updateAllProcedureSelects();
@@ -1291,7 +1302,6 @@ function initCalculator(data) {
     });
 }
 
-// [수정된 부분] 출력 페이지 생성 로직 수정
 function copyCalculatorDataTo(targetId) {
     const calculatorCaptureArea = document.querySelector('#Calculator-Page .capture-area');
     const targetPanel = document.getElementById(targetId);
@@ -1318,7 +1328,8 @@ function copyCalculatorDataTo(targetId) {
         const notesInput = row.querySelector('.notes');
         if (notesInput) {
             const replacementDiv = document.createElement('div');
-            replacementDiv.textContent = notesInput.value;
+            // [수정된 부분] placeholder는 출력하지 않도록 value만 복사
+            replacementDiv.textContent = notesInput.value; 
             if (notesInput.value.includes('모니터링')) {
                 replacementDiv.style.color = 'red';
                 replacementDiv.style.fontWeight = 'bold';
@@ -1330,6 +1341,7 @@ function copyCalculatorDataTo(targetId) {
         const procSelect = row.querySelector('.procedure-select');
         if (procSelect) {
             const replacementDiv = document.createElement('div');
+             // [수정된 부분] 기본값("시술을 선택하세요")은 출력하지 않음
             if (procSelect.value !== '0' && procSelect.value !== 'disabled') {
                  const selectedText = procSelect.options[procSelect.selectedIndex].text;
                  replacementDiv.textContent = selectedText;
@@ -1337,6 +1349,8 @@ function copyCalculatorDataTo(targetId) {
                      replacementDiv.style.color = 'red';
                      replacementDiv.style.fontWeight = 'bold';
                  }
+            } else {
+                replacementDiv.textContent = ''; // 빈 칸으로 표시
             }
             procSelect.parentElement.style.padding = '8px 4px';
             procSelect.replaceWith(replacementDiv);
