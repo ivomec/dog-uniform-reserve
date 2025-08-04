@@ -238,6 +238,20 @@
         .calculator-common .additional-treatments-column table { table-layout: auto; }
         .calculator-common .additional-treatments-column tr.selected-row > td { background-color: #e7f5ff; }
 
+        /* === START: 요청사항 반영 수정 === */
+        /* +버튼으로 추가된 행에 연한 노란색 배경 적용 */
+        .calculator-common tr.procedure-sub-row {
+            background-color: #fffde7;
+        }
+        /* 시술 카테고리별 행 배경색상 */
+        .calculator-common tr.highlight-extraction { background-color: #ffebee !important; }
+        .calculator-common tr.highlight-perio { background-color: #e3f2fd !important; }
+        .calculator-common tr.highlight-nerve { background-color: #e8f5e9 !important; }
+        .calculator-common tr.highlight-etc { background-color: #fafafa !important; }
+        /* '모니터링' 항목을 위한 특별 강조 스타일 (눈에 띄는 노란색) */
+        .calculator-common tr.highlight-monitoring { background-color: #fff176 !important; font-weight: bold; }
+        /* === END: 요청사항 반영 수정 === */
+
         .calculator-common .total-cost-container { text-align:center; margin-top:40px; padding:25px; background-color:#fff; border:3px solid #0056b3; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
         .calculator-common .total-cost-container h2 { font-size: 1.6em; color: #0056b3; margin: 0 0 15px 0; background-color: transparent; }
         .calculator-common .cost-summary-table { width: 100%; border-collapse: collapse; }
@@ -327,8 +341,7 @@
                 <main>
                     <a href="https://www.youtube.com/watch?v=_mk6qOF7OEs" target="_blank" class="action-button youtube-btn">🎥 영상 보러가기</a>
                     <div class="procedure-timeline">
-                        <!-- JS로 내용 채워짐 -->
-                    </div>
+                        </div>
                 </main>
             </div>
         </div>
