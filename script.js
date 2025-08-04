@@ -71,9 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
           { "borderColor": "#ff8a65", "title": "👑 7세 이상 성견 플랜", "items": ["👩‍⚕️ 신체검사", "🩸 재채혈", "🔬 혈구검사 (CBC)", "🧪 혈액화학검사 (12종)", "⚡ 전해질검사", "🩻 엑스레이 (5컷)", "🩺 혈압 측정", "🔥 염증수치검사 (CRP)", "❤️ 심전도 검사 (ECG)", "🚽 소변검사", "🩺 복부 정밀초음파", "🦋 갑상선 호르몬 검사 (T4)", "콩팥 기능 검사 (SDMA)"], "originalPrice": 554800, "discountPrice": 399000 },
           { "borderColor": "#ba68c8", "title": "💎 7세 이상 성견 VIP 플랜", "items": ["👩‍⚕️ 신체검사", "🩸 재채혈", "🔬 혈구검사 (CBC)", "🧪 혈액화학검사 (12종)", "⚡ 전해질검사", "🩻 엑스레이 (5컷)", "🩺 혈압 측정", "🔥 염증수치검사 (CRP)", "❤️ 심전도 검사 (ECG)", "🚽 소변검사", "🩺 복부 정밀초음파", "🦋 갑상선 호르몬 검사 (T4)", "콩팥 기능 검사 (SDMA)", "👁️ 안과 종합검진"], "originalPrice": 649800, "discountPrice": 449000 }
         ],
-        "explanation": { 
-            "title": "💡 꼭 확인해주세요! 추가 검사 안내 💡", 
-            "content": [ 
+        "explanation": {
+            "title": "💡 꼭 확인해주세요! 추가 검사 안내 💡",
+            "content": [
                 "전신 마취는 마치 <strong>'비행기 여행 ✈️'</strong>과 같아요. 여행 전에 <strong>날씨를 꼭! 체크 🌤️</strong>하는 것처럼, 마취 전 건강검진은 우리 아이의 몸 상태를 미리 확인해서 가장 안전한 여행(마취) 계획을 세우는 과정이랍니다.",
                 "겉으로는 보이지 않는 장기의 이상이나 숨겨진 질병을 미리 발견해서, 마취 중 발생할 수 있는 위험을 최소화하고 <strong>우리 댕댕이에게 가장 안전한 방법을 찾기 위한 💖사랑의 과정💖</strong>이에요.",
                 "<br><strong>❤️ 심장병이 의심될 경우 (심잡음, 심장 크기 확장 등)</strong><br>안전한 마취를 위해 심장 기능 정밀 평가를 위한 <strong>NT-ProBNP 검사(비용: 55,000원)</strong>가 추가적으로 필요할 수 있습니다. 아이의 안전을 위한 것이니 너른 양해 부탁드립니다.",
@@ -95,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
           { "borderColor": "#FF8C00", "title": "🍂 큰 아이 맞춤설계 (7세이상)", "items": ["👩‍⚕️ 신체검사", "🩸 재채혈", "🩺 혈압 측정", "🔬 혈구검사 (CBC)", "🧪 혈액화학검사 (12종)", "⚡ 전해질검사", "💩 분변 검사", "❤️ 심장 기능 검사 (ProBNP)", "🔥 염증수치검사 (CRP)", "🦋 갑상선 호르몬 검사 (T4)"], "originalPrice": 345800, "discountPrice": 299000 },
           { "borderColor": "#B22222", "title": "🍁 큰 아이 안심 맞춤설계 (7세이상 심화)", "items": ["👩‍⚕️ 신체검사", "🩸 재채혈", "🩺 혈압 측정", "🔬 혈구검사 (CBC)", "🧪 혈액화학검사 (12종)", "⚡ 전해질검사", "💩 분변 검사", "❤️ 심장 기능 검사 (ProBNP)", "🔥 염증수치검사 (CRP)", "🦋 갑상선 호르몬 검사 (T4)", "콩팥 기능 검사 (SDMA)", "🤢 췌장염 키트검사 (cPL)"], "originalPrice": 450800, "discountPrice": 349000 }
         ],
-        "explanation": { 
-            "title": "💡 꼭 확인해주세요! 추가 검사 안내 💡", 
-            "content": [ 
+        "explanation": {
+            "title": "💡 꼭 확인해주세요! 추가 검사 안내 💡",
+            "content": [
                 "전신 마취는 마치 <strong>'비행기 여행 ✈️'</strong>과 같아요. 여행 전에 <strong>날씨를 꼭! 체크 🌤️</strong>하는 것처럼, 마취 전 건강검진은 우리 아이의 몸 상태를 미리 확인해서 가장 안전한 여행(마취) 계획을 세우는 과정이랍니다.",
                 "겉으로는 보이지 않는 장기의 이상이나 숨겨진 질병을 미리 발견해서, 마취 중 발생할 수 있는 위험을 최소화하고 <strong>우리 댕댕이에게 가장 안전한 방법을 찾기 위한 💖사랑의 과정💖</strong>이에요.",
                 "<br><strong>❤️ 심장병이 의심될 경우 (심잡음, 심장 크기 확장 등)</strong><br>안전한 마취를 위해 심장 기능 정밀 평가를 위한 <strong>NT-ProBNP 검사(비용: 55,000원)</strong>가 추가적으로 필요할 수 있습니다. 아이의 안전을 위한 것이니 너른 양해 부탁드립니다.",
@@ -153,23 +153,23 @@ document.addEventListener('DOMContentLoaded', () => {
           "headerSubtitle": "💖 10kg 미만 아이들을 위한 맞춤 케어 비용 안내 💖",
           "items": [
               { "borderColor": "#f06292", "title": "🪄 통증 관리", "prices": [
-                  { "label": "⏰ 마취시간 연장 (30분당)", "value": "45,000 ~ 50,000원" }, 
-                  { "label": "📍 국소마취 (1~4 site)", "value": "10,000 ~ 20,000원" }, 
+                  { "label": "⏰ 마취시간 연장 (30분당)", "value": "45,000 ~ 50,000원" },
+                  { "label": "📍 국소마취 (1~4 site)", "value": "10,000 ~ 20,000원" },
                   { "label": "❤️‍🩹 마약성 진통 혈관주사", "value": "20,000 ~ 25,000원" },
                   { "label": "🕒 24시간 지속 진통 주사", "value": "20,000 ~ 25,000원" },
-                  { "label": "😊 무통 주사 (시린지펌프)", "value": "40,000 ~ 45,000원"}, 
+                  { "label": "😊 무통 주사 (시린지펌프)", "value": "40,000 ~ 45,000원"},
                   { "label": "🩹 마약성 진통패치 (노스판)", "value": "40,000원 ~" }
                 ]},
               { "borderColor": "#4dd0e1", "title": "🚀 회복/재생 촉진", "prices": [
-                  { "label": "💉 항생/소염 주사 (일반)", "value": "11,000원" }, 
-                  { "label": "💉 1주 지속 항생/소염 주사", "value": "15,000 ~ 18,000원" }, 
-                  { "label": "⚡️ 레이저 치료 (국소/전체)", "value": "20,000 ~ 28,000원" }, 
+                  { "label": "💉 항생/소염 주사 (일반)", "value": "11,000원" },
+                  { "label": "💉 1주 지속 항생/소염 주사", "value": "15,000 ~ 18,000원" },
+                  { "label": "⚡️ 레이저 치료 (국소/전체)", "value": "20,000 ~ 28,000원" },
                   { "label": "✨ 불소 도포", "value": "35,000 ~ 40,000원" }
                 ]},
               { "borderColor": "#9575cd", "title": "🏡 홈케어 처방", "prices": [
                   { "label": "💊 내복약 (1일/1회/1일분)", "value": "1,900 ~ 2,700원" },
-                  { "label": "💊 내복약 (1일/2회/1일분)", "value": "3,300 ~ 3,800원" }, 
-                  { "label": "💧 액상 진통제 (1ml 당)", "value": "8,000원 ~" }, 
+                  { "label": "💊 내복약 (1일/2회/1일분)", "value": "3,300 ~ 3,800원" },
+                  { "label": "💧 액상 진통제 (1ml 당)", "value": "8,000원 ~" },
                   { "label": "🧴 구강항생연고 (페리덱스)", "value": "15,000원" },
                   { "label": "🛡️ 구강점막코팅 (뮤코딘)", "value": "33,000원" },
                   { "label": "🌿 치주질환연고 (파로돈겔)", "value": "25,000원" },
@@ -187,22 +187,22 @@ document.addEventListener('DOMContentLoaded', () => {
           "headerSubtitle": "💖 10kg 이상 아이들을 위한 맞춤 케어 비용 안내 💖",
            "items": [
               { "borderColor": "#f06292", "title": "🪄 통증 관리", "prices": [
-                  { "label": "⏰ 마취시간 연장 (30분당)", "value": "55,000원 ~" }, 
-                  { "label": "📍 국소마취 (1~4 site)", "value": "12,000 ~ 23,000원" }, 
+                  { "label": "⏰ 마취시간 연장 (30분당)", "value": "55,000원 ~" },
+                  { "label": "📍 국소마취 (1~4 site)", "value": "12,000 ~ 23,000원" },
                   { "label": "❤️‍🩹 마약성 진통 혈관주사", "value": "26,000 ~ 28,000원" },
                   { "label": "🕒 24시간 지속 진통 주사", "value": "25,000 ~ 30,000원" },
-                  { "label": "😊 무통 주사 (시린지펌프)", "value": "50,000 ~ 60,000원"}, 
+                  { "label": "😊 무통 주사 (시린지펌프)", "value": "50,000 ~ 60,000원"},
                   { "label": "🩹 마약성 진통패치 (노스판)", "value": "50,000원 ~" }
                 ]},
               { "borderColor": "#4dd0e1", "title": "🚀 회복/재생 촉진", "prices": [
-                  { "label": "💉 항생/소염 주사 (일반)", "value": "13,000원 ~" }, 
-                  { "label": "💉 1주 지속 항생/소염 주사", "value": "20,000 ~ 30,000원" }, 
-                  { "label": "⚡️ 레이저 치료 (국소/전체)", "value": "26,000 ~ 37,000원" }, 
+                  { "label": "💉 항생/소염 주사 (일반)", "value": "13,000원 ~" },
+                  { "label": "💉 1주 지속 항생/소염 주사", "value": "20,000 ~ 30,000원" },
+                  { "label": "⚡️ 레이저 치료 (국소/전체)", "value": "26,000 ~ 37,000원" },
                   { "label": "✨ 불소 도포", "value": "44,000 ~ 50,000원" }
                 ]},
               { "borderColor": "#9575cd", "title": "🏡 홈케어 처방", "prices": [
-                  { "label": "💊 내복약 (1일/2회/1일분)", "value": "4,400 ~ 5,500원" }, 
-                  { "label": "💧 액상 진통제 (1ml 당)", "value": "별도 문의" }, 
+                  { "label": "💊 내복약 (1일/2회/1일분)", "value": "4,400 ~ 5,500원" },
+                  { "label": "💧 액상 진통제 (1ml 당)", "value": "별도 문의" },
                   { "label": "🧴 구강항생연고 (페리덱스)", "value": "15,000원" },
                   { "label": "🛡️ 구강점막코팅 (뮤코딘)", "value": "33,000원" },
                   { "label": "🌿 치주질환연고 (파로돈겔)", "value": "25,000원" },
@@ -220,26 +220,26 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerTitle": "❤️‍🩹 신경 및 보존 치료 ❤️‍🩹",
         "headerSubtitle": "무조건 뽑지 않아요! 💪 소중한 치아를 지켜주는 치료 비용 안내",
         "costs": [
-          { "borderColor": "#ffc078", "title": "✨ 살아있는 신경 살리기! (VPT)", "prices": [ 
+          { "borderColor": "#ffc078", "title": "✨ 살아있는 신경 살리기! (VPT)", "prices": [
               { "label": "송곳니 / 뿌리 1개,2개,3개(1홈)", "value": 450000 },
-              { "label": "뿌리 2개 (2홈)", "value": 550000 }, 
-              { "label": "뿌리 2개, 3개 (3홈)", "value": 660000 }, 
-              { "label": "뿌리 3개 (4홈)", "value": 770000 } 
+              { "label": "뿌리 2개 (2홈)", "value": 550000 },
+              { "label": "뿌리 2개, 3개 (3홈)", "value": 660000 },
+              { "label": "뿌리 3개 (4홈)", "value": 770000 }
             ]},
-          { "borderColor": "#ff87c2", "title": "💔 아픈 신경 치료하기 (신경치료)", "prices": [ 
-              { "label": "앞이빨", "value": 550000 }, 
-              { "label": "뿌리 2개 치아", "value": 660000 }, 
-              { "label": "송곳니", "value": 770000 }, 
+          { "borderColor": "#ff87c2", "title": "💔 아픈 신경 치료하기 (신경치료)", "prices": [
+              { "label": "앞이빨", "value": 550000 },
+              { "label": "뿌리 2개 치아", "value": 660000 },
+              { "label": "송곳니", "value": 770000 },
               { "label": "대구치", "value": 880000 },
               { "label": "열육치(PM4)", "value": 880000 }
             ]},
-          { "borderColor": "#4dabf7", "title": "🎨 예쁘게 때워주기 (레진 치료)", "prices": [ 
-              { "label": "3mm 이하", "value": 55000 }, 
+          { "borderColor": "#4dabf7", "title": "🎨 예쁘게 때워주기 (레진 치료)", "prices": [
+              { "label": "3mm 이하", "value": 55000 },
               { "label": "어금니", "value": 130000 },
               { "label": "송곳니", "value": 110000 }
             ]},
-          { "borderColor": "#26a69a", "title": "🛠️ 잇몸튼튼 치주치료", "prices": [ 
-              { "label": "치근활택술", "value": 45000 }, 
+          { "borderColor": "#26a69a", "title": "🛠️ 잇몸튼튼 치주치료", "prices": [
+              { "label": "치근활택술", "value": 45000 },
               { "label": "개방 치근활택술(봉합)", "value": 220000 },
               { "label": "미노클린", "value": 22000 },
               { "label": "엠도게인", "value": 99000 },
@@ -525,21 +525,23 @@ function initCalculator(data) {
         'table-upper-left':  [ { id: '201', type: '앞이빨', group: 3 }, { id: '202', type: '' }, { id: '203', type: '' }, { id: '204', type: '송곳니', group: 1 }, { id: '205', type: '작은<br>어금니', group: 4 }, { id: '206', type: '' }, { id: '207', type: '' }, { id: '208', type: '열육치' }, { id: '209', type: '큰<br>어금니', group: 2 }, { id: '210', type: '' } ],
         'table-lower-left':  [ { id: '301', type: '앞이빨', group: 3 }, { id: '302', type: '' }, { id: '303', type: '' }, { id: '304', type: '송곳니', group: 1 }, { id: '305', type: '작은<br>어금니', group: 4 }, { id: '306', type: '' }, { id: '307', type: '' }, { id: '308', type: '' }, { id: '309', type: '대구치', group: 3 }, { id: '310', type: '' }, { id: '311', type: '' } ]
     };
-    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':1,'106':2,'107':2,'108':3,'109':2,'110':2, '201':1,'202':1,'203':1,'204':1,'205':1,'206':2,'207':2,'208':3,'209':2,'210':2, '301':1,'302':1,'303':1,'304':1,'305':1,'306':2,'307':2,'308':2,'309':2,'310':2,'311':2, '401':1,'402':1,'403':1,'404':1,'405':1,'406':2,'407':2,'408':2,'409':2,'410':2,'411':2 };
+    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':1,'106':2,'107':2,'108':3,'109':2,'110':2, '201':1,'202':1,'203':1,'204':1,'205':1,'206':2,'207':2,'208':3,'209':3,'210':2, '301':1,'302':1,'303':1,'304':1,'305':1,'306':2,'307':2,'308':2,'309':3,'310':2,'311':2, '401':1,'402':1,'403':1,'404':1,'405':1,'406':2,'407':2,'408':2,'409':2,'410':2,'411':2 };
 
     const procedureList = {
-        '발치': { cat: '발치/제거', items: [ 
-            {l:'일반-뿌리1', s:22000, lrg:33000, r:[1]}, 
-            {l:'일반-뿌리2', s:66000, lrg:77000, r:[2]}, 
-            {l:'일반-뿌리3/대구치', s:88000, lrg:110000, r:[3], t:['409']}, 
+        '발치': { cat: '발치/제거', items: [
+            {l:'일반-뿌리1', s:22000, lrg:33000, r:[1]},
+            {l:'일반-뿌리2', s:66000, lrg:77000, r:[2]},
+            {l:'일반-뿌리3/대구치', s:88000, lrg:110000, r:[3]},
+            {l:'일반-대구치', s:88000, lrg:110000, t:['409']},
             {l:'일반-열육치(PM4)', s:88000, lrg:110000, t:['108','208']},
-            {l:'수술-뿌리1', s:44000, lrg:66000, r:[1]}, 
-            {l:'수술-뿌리2', s:120000, lrg:140000, r:[2]}, 
-            {l:'수술-뿌리3/대구치', s:220000, lrg:320000, r:[3], t:['409']}, 
+            {l:'수술-뿌리1', s:44000, lrg:66000, r:[1]},
+            {l:'수술-뿌리2', s:120000, lrg:140000, r:[2]},
+            {l:'수술-뿌리3/대구치', s:220000, lrg:320000, r:[3]},
+            {l:'수술-대구치', s:220000, lrg:320000, t:['409']},
             {l:'수술-열육치(PM4)', s:220000, lrg:320000, t:['108','208']},
-            {l:'수술-송곳니(상)', s:220000, lrg:320000, t:['104','204']}, 
+            {l:'수술-송곳니(상)', s:220000, lrg:320000, t:['104','204']},
             {l:'수술-송곳니(하)', s:270000, lrg:370000, t:['304','404']},
-            {l:'유치-일반', s:22000, lrg:33000, tag:'deciduous'}, 
+            {l:'유치-일반', s:22000, lrg:33000, tag:'deciduous'},
             {l:'유치-송곳니(x-rayX)', s:22000, lrg:33000, t:['104','204','304','404'], tag:'deciduous'},
             {l:'유치-송곳니(x-rayO)', s:33000, lrg:44000, t:['104','204','304','404'], tag:'deciduous'},
             {l:'유치-송곳니(수술)', s:66000, lrg:66000, t:['104','204','304','404'], tag:'deciduous'},
@@ -548,9 +550,9 @@ function initCalculator(data) {
             {l:'특수-치아흡수-뿌리3', s:140000, lrg:160000, r:[3]}
         ]},
         '치주 수술': { cat: '치주 치료', items: [
-            {l:'치근활택술', v:45000}, 
-            {l:'개방 치근활택술', v:220000}, 
-            {l:'미노클린', v:22000}, 
+            {l:'치근활택술', v:45000},
+            {l:'개방 치근활택술', v:220000},
+            {l:'미노클린', v:22000},
             {l:'엠도게인', v:99000}
         ]},
         '신경치료': { cat: '신경/보존 치료', items: [
@@ -666,56 +668,35 @@ function initCalculator(data) {
         return newRow;
     }
     
-    // === START: 요청사항 반영 수정 (새로운 하이라이트 로직) ===
+    // === START: 요청사항 반영 수정 ===
+    // 새로운 하이라이트 규칙을 적용하는 함수
     function updateRowHighlight(row) {
         if (!row) return;
 
-        const highlightClasses = ['highlight-extraction', 'highlight-perio', 'highlight-nerve', 'highlight-etc', 'highlight-monitoring'];
         const notesInput = row.querySelector('.notes');
+        const select = row.querySelector('select');
+        
+        // 하이라이트를 적용할 테이블 셀(td)을 가져옵니다.
         const notesCell = notesInput ? notesInput.closest('td') : null;
-        const select = row.querySelector('select.procedure-select');
+        const procedureCell = select ? select.closest('td') : null;
+        const idCell = row.querySelector('.tooth-id-cell');
+        
+        // 1. 모든 관련 셀의 배경색을 초기화합니다.
+        if (notesCell) notesCell.style.backgroundColor = '';
+        if (procedureCell) procedureCell.style.backgroundColor = '';
+        if (idCell) idCell.style.backgroundColor = '';
 
-        // 1. 모든 이전 하이라이트 초기화
-        row.classList.remove(...highlightClasses);
-        if (notesCell) {
-            notesCell.style.backgroundColor = '';
-        }
-
-        // 2. '특이사항' 내용에 따른 하이라이트 적용
+        // 2. 새로운 규칙에 따라 배경색을 적용합니다.
+        // 규칙 1: '특이사항'에 내용이 있으면 해당 셀을 연한 노란색으로 변경
         if (notesInput && notesInput.value.trim() !== '') {
-            if (notesCell) {
-                notesCell.style.backgroundColor = '#fffde7'; // 연한 노란색
-            }
+            if (notesCell) notesCell.style.backgroundColor = '#fffde7';
         }
-
-        // 3. 선택된 시술 카테고리에 따른 하이라이트 적용
-        if (select) {
-            const selectedOption = select.options[select.selectedIndex];
-            if (selectedOption && select.value !== '0' && select.value !== 'disabled') {
-                const category = selectedOption.dataset.category;
-                let classToAdd = '';
-
-                switch (category) {
-                    case '발치/제거':
-                        classToAdd = 'highlight-extraction';
-                        break;
-                    case '치주 치료':
-                        classToAdd = 'highlight-perio';
-                        break;
-                    case '신경/보존 치료':
-                        classToAdd = 'highlight-nerve';
-                        break;
-                    case '기타':
-                        classToAdd = 'highlight-etc';
-                        break;
-                    case '모니터링':
-                        classToAdd = 'highlight-monitoring';
-                        break;
-                }
-                if (classToAdd) {
-                    row.classList.add(classToAdd);
-                }
-            }
+        
+        // 규칙 2: 시술을 선택하면('모니터링' 포함) '번호' 셀과 '시술 선택' 셀을 연한 빨간색으로 변경
+        if (select && select.value !== '0' && select.value !== 'disabled') {
+            const redBackgroundColor = '#ffcdd2';
+            if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
+            if (idCell) idCell.style.backgroundColor = redBackgroundColor;
         }
     }
     // === END: 요청사항 반영 수정 ===
@@ -1548,4 +1529,4 @@ function addExportListeners(pageSelector, type) {
         });
     });
 }
-// === END: 요청사항 반영 수정 ===
+// === END: 요청사항 반영 수정 (버튼 리스너) ===
