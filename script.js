@@ -525,22 +525,27 @@ function initCalculator(data) {
         'table-upper-left':  [ { id: '201', type: '앞이빨', group: 3 }, { id: '202', type: '' }, { id: '203', type: '' }, { id: '204', type: '송곳니', group: 1 }, { id: '205', type: '작은<br>어금니', group: 4 }, { id: '206', type: '' }, { id: '207', type: '' }, { id: '208', type: '열육치' }, { id: '209', type: '큰<br>어금니', group: 2 }, { id: '210', type: '' } ],
         'table-lower-left':  [ { id: '301', type: '앞이빨', group: 3 }, { id: '302', type: '' }, { id: '303', type: '' }, { id: '304', type: '송곳니', group: 1 }, { id: '305', type: '작은<br>어금니', group: 4 }, { id: '306', type: '' }, { id: '307', type: '' }, { id: '308', type: '' }, { id: '309', type: '대구치', group: 3 }, { id: '310', type: '' }, { id: '311', type: '' } ]
     };
-    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':1,'106':2,'107':2,'108':3,'109':2,'110':2, '201':1,'202':1,'203':1,'204':1,'205':1,'206':2,'207':2,'208':3,'209':3,'210':2, '301':1,'302':1,'303':1,'304':1,'305':1,'306':2,'307':2,'308':2,'309':3,'310':2,'311':2, '401':1,'402':1,'403':1,'404':1,'405':1,'406':2,'407':2,'408':2,'409':2,'410':2,'411':2 };
+    // [수정된 부분] 치아 뿌리 개수 재정의
+    const rootMapping = { '101':1,'102':1,'103':1,'104':1,'105':1,'106':2,'107':2,'108':3,'109':3,'110':2, '201':1,'202':1,'203':1,'204':1,'205':1,'206':2,'207':2,'208':3,'209':3,'210':2, '301':1,'302':1,'303':1,'304':1,'305':1,'306':2,'307':2,'308':2,'309':2,'310':2,'311':1, '401':1,'402':1,'403':1,'404':1,'405':1,'406':2,'407':2,'408':2,'409':2,'410':2,'411':1 };
 
+    // [수정된 부분] 시술 목록 및 규칙 재정의
     const procedureList = {
         '발치': { cat: '발치/제거', items: [
+            // 일반 규칙 (특정 치아 제외)
             {l:'일반-뿌리1', s:22000, lrg:33000, r:[1]},
-            {l:'일반-뿌리2', s:66000, lrg:77000, r:[2]},
-            {l:'일반-뿌리3/대구치', s:88000, lrg:110000, r:[3]},
-            {l:'일반-대구치', s:88000, lrg:110000, t:['409']},
-            {l:'일반-열육치(PM4)', s:88000, lrg:110000, t:['108','208']},
+            {l:'일반-뿌리2', s:66000, lrg:77000, r:[2], not:['309', '409']},
+            {l:'일반-뿌리3개', s:88000, lrg:110000, r:[3], not:['108', '208']},
             {l:'수술-뿌리1', s:44000, lrg:66000, r:[1]},
-            {l:'수술-뿌리2', s:120000, lrg:140000, r:[2]},
-            {l:'수술-뿌리3/대구치', s:220000, lrg:320000, r:[3]},
-            {l:'수술-대구치', s:220000, lrg:320000, t:['409']},
+            {l:'수술-뿌리2', s:120000, lrg:140000, r:[2], not:['309', '409']},
+            {l:'수술-뿌리3개', s:220000, lrg:320000, r:[3], not:['108', '208']},
+            // 특정 치아 규칙
+            {l:'일반-대구치', s:88000, lrg:110000, t:['309', '409']},
+            {l:'수술-대구치', s:220000, lrg:320000, t:['309', '409']},
+            {l:'일반-열육치(PM4)', s:88000, lrg:110000, t:['108','208']},
             {l:'수술-열육치(PM4)', s:220000, lrg:320000, t:['108','208']},
             {l:'수술-송곳니(상)', s:220000, lrg:320000, t:['104','204']},
             {l:'수술-송곳니(하)', s:270000, lrg:370000, t:['304','404']},
+            // 유치 및 기타 규칙
             {l:'유치-일반', s:22000, lrg:33000, tag:'deciduous'},
             {l:'유치-송곳니(x-rayX)', s:22000, lrg:33000, t:['104','204','304','404'], tag:'deciduous'},
             {l:'유치-송곳니(x-rayO)', s:33000, lrg:44000, t:['104','204','304','404'], tag:'deciduous'},
@@ -668,38 +673,30 @@ function initCalculator(data) {
         return newRow;
     }
     
-    // === START: 요청사항 반영 수정 ===
-    // 새로운 하이라이트 규칙을 적용하는 함수
     function updateRowHighlight(row) {
         if (!row) return;
 
         const notesInput = row.querySelector('.notes');
         const select = row.querySelector('select');
         
-        // 하이라이트를 적용할 테이블 셀(td)을 가져옵니다.
         const notesCell = notesInput ? notesInput.closest('td') : null;
         const procedureCell = select ? select.closest('td') : null;
         const idCell = row.querySelector('.tooth-id-cell');
         
-        // 1. 모든 관련 셀의 배경색을 초기화합니다.
         if (notesCell) notesCell.style.backgroundColor = '';
         if (procedureCell) procedureCell.style.backgroundColor = '';
         if (idCell) idCell.style.backgroundColor = '';
 
-        // 2. 새로운 규칙에 따라 배경색을 적용합니다.
-        // 규칙 1: '특이사항'에 내용이 있으면 해당 셀을 연한 노란색으로 변경
         if (notesInput && notesInput.value.trim() !== '') {
             if (notesCell) notesCell.style.backgroundColor = '#fffde7';
         }
         
-        // 규칙 2: 시술을 선택하면('모니터링' 포함) '번호' 셀과 '시술 선택' 셀을 연한 빨간색으로 변경
         if (select && select.value !== '0' && select.value !== 'disabled') {
             const redBackgroundColor = '#ffcdd2';
             if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
             if (idCell) idCell.style.backgroundColor = redBackgroundColor;
         }
     }
-    // === END: 요청사항 반영 수정 ===
 
     function handleSelectionChange(target) {
         const row = target.closest('tr');
@@ -1269,15 +1266,12 @@ function initCalculator(data) {
     updateDynamicTitle();
     updateTotalCost();
 
-    // === START: 요청사항 반영 수정 (버튼 리스너) ===
-    // querySelectorAll을 사용하여 상단과 하단에 있는 모든 버튼 컨테이너를 선택합니다.
     const btnContainers = page.closest('.content-panel').querySelectorAll('.export-container');
     btnContainers.forEach(container => {
         container.querySelector('.save-data-btn')?.addEventListener('click', saveData);
         container.querySelector('.load-data-btn')?.addEventListener('click', () => container.querySelector('.load-data-input').click());
         container.querySelector('.load-data-input')?.addEventListener('change', loadData);
     });
-    // === END: 요청사항 반영 수정 (버튼 리스너) ===
     
     window.addEventListener('beforeunload', (e) => {
         if (isChartDirty) { 
@@ -1303,7 +1297,6 @@ function copyCalculatorDataTo(targetId) {
         if (clonedEl) {
             if (sourceEl.tagName === 'SELECT') {
                 clonedEl.selectedIndex = sourceEl.selectedIndex;
-                // 스타일 복사
                 const sourceOption = sourceEl.options[sourceEl.selectedIndex];
                 const clonedOption = clonedEl.options[clonedEl.selectedIndex];
                 if (sourceOption && clonedOption && sourceOption.style.color) {
@@ -1335,15 +1328,11 @@ function copyCalculatorDataTo(targetId) {
         if(allHidden) row.style.display = 'none';
     });
     
-    // [수정된 부분] 입력되지 않은 치아 행을 숨기는 로직을 제거하여 전체 치아 테이블이 보이도록 합니다.
     clonedArea.querySelectorAll('.main-container tr').forEach(row => {
         const select = row.querySelector('.procedure-select');
         const notes = row.querySelector('.notes');
-        // 치료 내역이 없는 행은 숨기지 않고 그대로 둡니다.
-        // 따라서, 이전에 있던 if 문을 제거합니다.
-        // 사용자가 입력한 내용이 없는 행은 흐리게 보이도록 스타일을 추가할 수 있습니다. (선택 사항)
         if (select && select.value === '0' && notes && notes.value.trim() === '') {
-            row.style.opacity = '0.6'; // 예: 비활성화된 것처럼 보이게 처리
+            row.style.opacity = '0.6'; 
         }
     });
 
@@ -1353,7 +1342,7 @@ function copyCalculatorDataTo(targetId) {
     const visitDate = new Date(visitDateRaw);
     const formattedDate = visitDateRaw && !isNaN(visitDate.getTime()) ? `${visitDate.getFullYear()}년 ${visitDate.getMonth() + 1}월 ${visitDate.getDate()}일` : "오늘";
     
-    targetCaptureArea.innerHTML = ''; // Clear previous content
+    targetCaptureArea.innerHTML = ''; 
     
     const toothFormulaImage = document.createElement('img');
     toothFormulaImage.src = "https://raw.githubusercontent.com/ivomec/image/main/%EC%B9%98%EC%8B%9D1.jpg?raw=true";
@@ -1423,7 +1412,6 @@ function generateGuardianComments(clonedArea) {
     return `<div class="guardian-comment-section"><h2>⭐ 우리 아이, 이렇게 관리해주세요! ⭐</h2><div class="comment-box"><h3>- 🩺 앞으로의 관리 안내</h3><ul>${careAdviceHTML}</ul></div><p class="thank-you-message">소중한 아이의 치과 수술을 저희 금호동물병원에 믿고 맡겨주셔서 다시 한번 진심으로 감사드립니다.</p></div>`;
 }
 
-// === START: 요청사항 반영 수정 (버튼 리스너) ===
 function addExportListeners(pageSelector, type) {
     const page = document.querySelector(pageSelector);
     if (!page) return;
@@ -1468,9 +1456,6 @@ function addExportListeners(pageSelector, type) {
              const select = row.querySelector('.procedure-select');
              const notes = row.querySelector('.notes');
              if(select && select.value === '0' && notes && notes.value.trim() === '') {
-                 // [수정된 부분] 내보내기 시에도 숨기지 않도록 display 속성 변경을 주석 처리합니다.
-                 // row.style.display = 'none'; 
-                 // hiddenDentalRows.push(row);
              }
         });
 
@@ -1483,15 +1468,13 @@ function addExportListeners(pageSelector, type) {
             if (patientInfoInputs) patientInfoInputs.style.display = originalDisplay;
             hiddenAddonRows.forEach(row => row.style.display = '');
             hiddenCategoryHeaders.forEach(row => row.style.display = '');
-            hiddenDentalRows.forEach(row => row.style.display = ''); // 복원 로직은 유지
+            hiddenDentalRows.forEach(row => row.style.display = ''); 
         });
     };
 
-    // querySelectorAll을 사용하여 상단과 하단에 있는 모든 버튼 컨테이너를 선택합니다.
     const btnContainers = page.querySelectorAll('.export-container');
     if (!btnContainers) return;
 
-    // 각 컨테이너 안의 버튼에 이벤트 리스너를 추가합니다.
     btnContainers.forEach(btnContainer => {
         btnContainer.querySelector('.export-png-btn')?.addEventListener('click', () => {
             exportHandler((canvas, fileName) => {
@@ -1529,4 +1512,3 @@ function addExportListeners(pageSelector, type) {
         });
     });
 }
-// === END: 요청사항 반영 수정 (버튼 리스너) ===
