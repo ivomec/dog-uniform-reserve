@@ -667,55 +667,37 @@ function initCalculator(data) {
     }
     
     // === START: 요청사항 반영 수정 ===
+    // 새로운 하이라이트 규칙을 적용하는 함수
     function updateRowHighlight(row) {
         if (!row) return;
-        const notes = row.querySelector('.notes');
+
+        const notesInput = row.querySelector('.notes');
         const select = row.querySelector('select');
-        const selectedOption = select ? select.options[select.selectedIndex] : null;
-        let isHighlighted = (notes && notes.value.trim() !== '') || (select && select.value !== '0' && select.value !== 'disabled');
+        
+        // 하이라이트를 적용할 테이블 셀(td)을 가져옵니다.
+        const notesCell = notesInput ? notesInput.closest('td') : null;
+        const procedureCell = select ? select.closest('td') : null;
+        const idCell = row.querySelector('.tooth-id-cell');
+        
+        // 1. 모든 관련 셀의 배경색을 초기화합니다.
+        if (notesCell) notesCell.style.backgroundColor = '';
+        if (procedureCell) procedureCell.style.backgroundColor = '';
+        if (idCell) idCell.style.backgroundColor = '';
 
-        // 이전에 적용된 모든 하이라이트 클래스를 제거합니다.
-        row.classList.remove(
-            'row-highlight',
-            'highlight-extraction',
-            'highlight-perio',
-            'highlight-nerve',
-            'highlight-etc',
-            'highlight-monitoring'
-        );
-
-        if (isHighlighted) {
-            row.classList.add('row-highlight'); // 텍스트 굵기 등 기본 하이라이트 적용
-
-            if (selectedOption && selectedOption.dataset.category) {
-                const category = selectedOption.dataset.category;
-                switch (category) {
-                    case '발치/제거':
-                        row.classList.add('highlight-extraction');
-                        break;
-                    case '치주 치료':
-                        row.classList.add('highlight-perio');
-                        break;
-                    case '신경/보존 치료':
-                        row.classList.add('highlight-nerve');
-                        break;
-                    case '기타':
-                        row.classList.add('highlight-etc');
-                        break;
-                    case '모니터링':
-                        row.classList.add('highlight-monitoring');
-                        break;
-                }
-            }
+        // 2. 새로운 규칙에 따라 배경색을 적용합니다.
+        // 규칙 1: '특이사항'에 내용이 있으면 해당 셀을 연한 노란색으로 변경
+        if (notesInput && notesInput.value.trim() !== '') {
+            if (notesCell) notesCell.style.backgroundColor = '#fffde7';
         }
-
-        const typeCell = row.querySelector('td.tooth-type') || findGoverningTypeCell(row);
-        if(typeCell && typeCell.parentElement && typeCell.parentElement.parentElement) {
-             const rowsInGroup = Array.from(typeCell.parentElement.parentElement.children).filter(r => r.querySelector('.tooth-type') === typeCell || findGoverningTypeCell(r) === typeCell);
-             let isAnyRowInGroupHighlighted = rowsInGroup.some(r => r.classList.contains('row-highlight'));
-             typeCell.style.backgroundColor = isAnyRowInGroupHighlighted ? '#f0f0f0' : '';
+        
+        // 규칙 2: 시술을 선택하면('모니터링' 포함) '번호' 셀과 '시술 선택' 셀을 연한 빨간색으로 변경
+        if (select && select.value !== '0' && select.value !== 'disabled') {
+            const redBackgroundColor = '#ffcdd2';
+            if (procedureCell) procedureCell.style.backgroundColor = redBackgroundColor;
+            if (idCell) idCell.style.backgroundColor = redBackgroundColor;
         }
     }
+    // === END: 요청사항 반영 수정 ===
 
     function handleSelectionChange(target) {
         const row = target.closest('tr');
@@ -728,7 +710,6 @@ function initCalculator(data) {
             const value = target.value;
             cost = parseInt(value.split('|').pop(), 10) || 0;
             selectedOption = target.options[target.selectedIndex];
-            // '모니터링' 옵션의 텍스트 색상 변경 로직은 제거 (CSS 클래스로 전체 행 스타일링)
         }
 
         if (row.classList.contains('additional-row')) {
@@ -763,7 +744,6 @@ function initCalculator(data) {
         updateTotalCost();
         isChartDirty = true;
     }
-    // === END: 요청사항 반영 수정 ===
     
     function findGoverningTypeCell(row) {
         let current = row;
@@ -1228,12 +1208,16 @@ function initCalculator(data) {
 
     page.addEventListener('input', (e) => {
         isChartDirty = true;
-        if (e.target.matches('.notes')) updateRowHighlight(e.target.closest('tr'));
+        if (e.target.matches('.notes')) {
+            updateRowHighlight(e.target.closest('tr'));
+        }
         if (e.target.matches('#patient-weight-calc')) { 
             updateAllProcedureSelects();
             updateAdditionalOptions(); 
         }
-        if (e.target.matches('#patient-name-calc, #visit-date-calc')) updateDynamicTitle();
+        if (e.target.matches('#patient-name-calc, #visit-date-calc')) {
+            updateDynamicTitle();
+        }
     });
 
     page.addEventListener('click', (e) => {
@@ -1271,6 +1255,7 @@ function initCalculator(data) {
         teeth.forEach(tooth => {
             const mainRow = createMainRow(tooth);
             tableBody.appendChild(mainRow);
+            updateRowHighlight(mainRow); // 초기 하이라이트 상태 설정
         });
     }
     
@@ -1282,10 +1267,15 @@ function initCalculator(data) {
     updateDynamicTitle();
     updateTotalCost();
 
-    const btnContainer = page.closest('.content-panel').querySelector('.export-container');
-    btnContainer.querySelector('.save-data-btn')?.addEventListener('click', saveData);
-    btnContainer.querySelector('.load-data-btn')?.addEventListener('click', () => btnContainer.querySelector('.load-data-input').click());
-    btnContainer.querySelector('.load-data-input')?.addEventListener('change', loadData);
+    // === START: 요청사항 반영 수정 (버튼 리스너) ===
+    // querySelectorAll을 사용하여 상단과 하단에 있는 모든 버튼 컨테이너를 선택합니다.
+    const btnContainers = page.closest('.content-panel').querySelectorAll('.export-container');
+    btnContainers.forEach(container => {
+        container.querySelector('.save-data-btn')?.addEventListener('click', saveData);
+        container.querySelector('.load-data-btn')?.addEventListener('click', () => container.querySelector('.load-data-input').click());
+        container.querySelector('.load-data-input')?.addEventListener('change', loadData);
+    });
+    // === END: 요청사항 반영 수정 (버튼 리스너) ===
     
     window.addEventListener('beforeunload', (e) => {
         if (isChartDirty) { 
@@ -1431,11 +1421,10 @@ function generateGuardianComments(clonedArea) {
     return `<div class="guardian-comment-section"><h2>⭐ 우리 아이, 이렇게 관리해주세요! ⭐</h2><div class="comment-box"><h3>- 🩺 앞으로의 관리 안내</h3><ul>${careAdviceHTML}</ul></div><p class="thank-you-message">소중한 아이의 치과 수술을 저희 금호동물병원에 믿고 맡겨주셔서 다시 한번 진심으로 감사드립니다.</p></div>`;
 }
 
+// === START: 요청사항 반영 수정 (버튼 리스너) ===
 function addExportListeners(pageSelector, type) {
     const page = document.querySelector(pageSelector);
     if (!page) return;
-    const btnContainer = page.querySelector('.export-container');
-    if (!btnContainer) return;
 
     const exportHandler = (exportFunc) => {
         const captureArea = page.querySelector('.capture-area');
@@ -1496,38 +1485,46 @@ function addExportListeners(pageSelector, type) {
         });
     };
 
-    btnContainer.querySelector('.export-png-btn')?.addEventListener('click', () => {
-        exportHandler((canvas, fileName) => {
-            const link = document.createElement('a');
-            link.download = fileName + '.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+    // querySelectorAll을 사용하여 상단과 하단에 있는 모든 버튼 컨테이너를 선택합니다.
+    const btnContainers = page.querySelectorAll('.export-container');
+    if (!btnContainers) return;
+
+    // 각 컨테이너 안의 버튼에 이벤트 리스너를 추가합니다.
+    btnContainers.forEach(btnContainer => {
+        btnContainer.querySelector('.export-png-btn')?.addEventListener('click', () => {
+            exportHandler((canvas, fileName) => {
+                const link = document.createElement('a');
+                link.download = fileName + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         });
-    });
 
-    btnContainer.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
-        exportHandler((canvas, fileName) => {
-            const { jsPDF } = window.jspdf;
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const canvasAspectRatio = canvasWidth / canvasHeight;
-            const renderHeight = pdfWidth / canvasAspectRatio;
-            
-            let position = 0;
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
-            let heightLeft = renderHeight - pdf.internal.pageSize.getHeight();
-
-            while (heightLeft > 0) {
-                position -= pdf.internal.pageSize.getHeight();
-                pdf.addPage();
+        btnContainer.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
+            exportHandler((canvas, fileName) => {
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
+                const canvasAspectRatio = canvasWidth / canvasHeight;
+                const renderHeight = pdfWidth / canvasAspectRatio;
+                
+                let position = 0;
                 pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
-                heightLeft -= pdf.internal.pageSize.getHeight();
-            }
-            
-            pdf.save(fileName + '.pdf');
+                let heightLeft = renderHeight - pdf.internal.pageSize.getHeight();
+
+                while (heightLeft > 0) {
+                    position -= pdf.internal.pageSize.getHeight();
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+                }
+                
+                pdf.save(fileName + '.pdf');
+            });
         });
     });
 }
+// === END: 요청사항 반영 수정 (버튼 리스너) ===
