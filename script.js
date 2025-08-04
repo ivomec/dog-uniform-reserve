@@ -666,34 +666,49 @@ function initCalculator(data) {
         return newRow;
     }
     
+    // === START: 요청사항 반영 수정 ===
     function updateRowHighlight(row) {
         if (!row) return;
         const notes = row.querySelector('.notes');
         const select = row.querySelector('select');
         const selectedOption = select ? select.options[select.selectedIndex] : null;
         let isHighlighted = (notes && notes.value.trim() !== '') || (select && select.value !== '0' && select.value !== 'disabled');
-        
-        row.classList.toggle('row-highlight', isHighlighted);
-        
-        const idCell = row.querySelector('.tooth-id-cell');
-        if (idCell) {
-            idCell.style.backgroundColor = '';
-            idCell.style.color = '';
-            idCell.style.fontWeight = '';
-            if (isHighlighted && selectedOption) {
+
+        // 이전에 적용된 모든 하이라이트 클래스를 제거합니다.
+        row.classList.remove(
+            'row-highlight',
+            'highlight-extraction',
+            'highlight-perio',
+            'highlight-nerve',
+            'highlight-etc',
+            'highlight-monitoring'
+        );
+
+        if (isHighlighted) {
+            row.classList.add('row-highlight'); // 텍스트 굵기 등 기본 하이라이트 적용
+
+            if (selectedOption && selectedOption.dataset.category) {
                 const category = selectedOption.dataset.category;
                 switch (category) {
-                    case '발치/제거': idCell.style.backgroundColor = '#ffcdd2'; break;
-                    case '치주 치료': idCell.style.backgroundColor = '#c5cae9'; break;
-                    case '신경/보존 치료': idCell.style.backgroundColor = '#b2dfdb'; break;
-                    case '기타': idCell.style.backgroundColor = '#fff9c4'; break;
-                    case '모니터링': 
-                        idCell.style.backgroundColor = '#faff00'; // 형광색으로 변경
+                    case '발치/제거':
+                        row.classList.add('highlight-extraction');
+                        break;
+                    case '치주 치료':
+                        row.classList.add('highlight-perio');
+                        break;
+                    case '신경/보존 치료':
+                        row.classList.add('highlight-nerve');
+                        break;
+                    case '기타':
+                        row.classList.add('highlight-etc');
+                        break;
+                    case '모니터링':
+                        row.classList.add('highlight-monitoring');
                         break;
                 }
             }
         }
-        
+
         const typeCell = row.querySelector('td.tooth-type') || findGoverningTypeCell(row);
         if(typeCell && typeCell.parentElement && typeCell.parentElement.parentElement) {
              const rowsInGroup = Array.from(typeCell.parentElement.parentElement.children).filter(r => r.querySelector('.tooth-type') === typeCell || findGoverningTypeCell(r) === typeCell);
@@ -713,16 +728,7 @@ function initCalculator(data) {
             const value = target.value;
             cost = parseInt(value.split('|').pop(), 10) || 0;
             selectedOption = target.options[target.selectedIndex];
-
-            // '모니터링' 선택 시 글자색 변경 로직
-            Array.from(target.options).forEach(opt => {
-                opt.style.color = '';
-                opt.style.fontWeight = '';
-            });
-            if (selectedOption && selectedOption.dataset.category === '모니터링') {
-                selectedOption.style.color = 'red';
-                selectedOption.style.fontWeight = 'bold';
-            }
+            // '모니터링' 옵션의 텍스트 색상 변경 로직은 제거 (CSS 클래스로 전체 행 스타일링)
         }
 
         if (row.classList.contains('additional-row')) {
@@ -757,6 +763,7 @@ function initCalculator(data) {
         updateTotalCost();
         isChartDirty = true;
     }
+    // === END: 요청사항 반영 수정 ===
     
     function findGoverningTypeCell(row) {
         let current = row;
