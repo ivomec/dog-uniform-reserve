@@ -1520,4 +1520,4 @@ function addExportListeners(pageSelector, type) {
             });
         });
     });
-}```
+}
